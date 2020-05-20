@@ -1,4 +1,5 @@
 = ARM MCU Makefile Guide
+:toc: left
 
 STATUS: WORK IN PROGRESS. NOTHING TO SEE HERE.
 

@@ -1,193 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <?asciidoc-toc?>
 <?asciidoc-numbered?>
-
-<article lang="en">
-<articleinfo>
-    <title>ARM MCU Makefile Guide</title>
-</articleinfo>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
+<info>
+<title>ARM MCU Makefile Guide</title>
+<date>2020-05-19</date>
+</info>
 <simpara>STATUS: WORK IN PROGRESS. NOTHING TO SEE HERE.</simpara>
 <simpara>A minimalist guide and skeleton for building, running, and debugging firmware
 for ARM-based microcontrollers using C, GCC, OpenOCD, and GDB.</simpara>
-<section id="_goals_for_this_guide">
+<section xml:id="_goals_for_this_guide">
 <title>Goals for this Guide</title>
 <itemizedlist>
 <listitem>
-<simpara>
-Demonstrate a minimal Makefile-based solution for building an
-  extremely simple LED-blinking firmware for an ARM microcontroller (MCU).
-</simpara>
+<simpara>Demonstrate a minimal Makefile-based solution for building an
+extremely simple LED-blinking firmware for an ARM microcontroller (MCU).</simpara>
 </listitem>
 <listitem>
-<simpara>
-Demonstrate a build/test/debug workflow that works entirely from the
-  CLI on Linux (and eventually Mac)
-</simpara>
+<simpara>Demonstrate a build/test/debug workflow that works entirely from the
+CLI on Linux (and eventually Mac)</simpara>
 </listitem>
 <listitem>
-<simpara>
-The workflow described here should be easily adaptable to a continuous
-  integration system such as Jenkins. In other words, it should be
-  straightforward to automate building and publishing firmware binary
-  release-candidates automatically following code review (i.e. no humans ever
-  hand-build the official firmware files which are tested and then released).
-</simpara>
+<simpara>The workflow described here should be easily adaptable to a continuous
+integration system such as Jenkins. In other words, it should be
+straightforward to automate building and publishing firmware binary
+release-candidates automatically following code review (i.e. no humans ever
+hand-build the official firmware files which are tested and then released).</simpara>
 </listitem>
 <listitem>
-<simpara>
-Teach the basic concepts of MCU development to programmers already familiar
-  with C programming on Linux/Mac.
-</simpara>
+<simpara>Teach the basic concepts of MCU development to programmers already familiar
+with C programming on Linux/Mac.</simpara>
 </listitem>
 </itemizedlist>
 </section>
-<section id="_why_not_use_the_vendor_recommended_ides">
+<section xml:id="_why_not_use_the_vendor_recommended_ides">
 <title>Why not use the vendor-recommended IDEs?</title>
 <itemizedlist>
 <listitem>
-<simpara>
-The classic vendor-supported methods of developing firmware for MCUs is using
-  a full-blown IDE like Keil, IAR, or MCU Eclipse.
-</simpara>
+<simpara>The classic vendor-supported methods of developing firmware for MCUs is using
+a full-blown IDE like Keil, IAR, or MCU Eclipse.</simpara>
 </listitem>
 <listitem>
-<simpara>
-These legacy IDE-based tools are GUI-based and can be proprietary and/or
-  expensive. They have their own learning curves as they are advanced tools for "serious professionals".
-</simpara>
+<simpara>These legacy IDE-based tools are GUI-based and can be proprietary and/or
+expensive. They have their own learning curves as they are advanced tools for "serious professionals".</simpara>
 </listitem>
 <listitem>
-<simpara>
-The advanced GUI-based tools obscure the basic basic underlying concepts
-  which aren&#8217;t really that complicated!
-</simpara>
+<simpara>The advanced GUI-based tools obscure the basic basic underlying concepts
+which aren&#8217;t really that complicated!</simpara>
 </listitem>
 </itemizedlist>
-<section id="_hardware">
+<section xml:id="_hardware">
 <title>Hardware</title>
 <itemizedlist>
 <listitem>
-<simpara>
-ST
-</simpara>
+<simpara>ST</simpara>
 <itemizedlist>
 <listitem>
-<simpara>
-STM32F407G-DISC1 STF32F4 Discovery Board
-</simpara>
+<simpara>STM32F407G-DISC1 STF32F4 Discovery Board</simpara>
 </listitem>
 </itemizedlist>
 </listitem>
 <listitem>
-<simpara>
-Nuvoton
-</simpara>
+<simpara>Nuvoton</simpara>
 <itemizedlist>
 <listitem>
-<simpara>
-NuTiny-NUC029SEE
-</simpara>
+<simpara>NuTiny-NUC029SEE</simpara>
 </listitem>
 </itemizedlist>
 </listitem>
 <listitem>
-<simpara>
-NXP
-</simpara>
+<simpara>NXP</simpara>
 <itemizedlist>
 <listitem>
-<simpara>
-OM13080: LPCXpresso1125 Board
-</simpara>
+<simpara>OM13080: LPCXpresso1125 Board</simpara>
 </listitem>
 <listitem>
-<simpara>
-OM13080: LPCXpresso1125 Board
-</simpara>
+<simpara>OM13080: LPCXpresso1125 Board</simpara>
 </listitem>
 </itemizedlist>
 </listitem>
 </itemizedlist>
 </section>
-<section id="_software">
+<section xml:id="_software">
 <title>Software</title>
 <itemizedlist>
 <listitem>
-<simpara>
-TODO: Walkthrough build/install OpenOCD
-</simpara>
+<simpara>TODO: Walkthrough build/install OpenOCD</simpara>
 </listitem>
 <listitem>
-<simpara>
-TODO: Walkthrough install of ARM GCC toolchain
-</simpara>
+<simpara>TODO: Walkthrough install of ARM GCC toolchain</simpara>
 </listitem>
 </itemizedlist>
 </section>
 </section>
-<section id="_resources">
+<section xml:id="_resources">
 <title>Resources</title>
 <itemizedlist>
 <listitem>
-<simpara>
-<ulink url="http://robotics.mcmanis.com/articles/20190318_bare-metal-arm.html">Bare Metal ARM Programming</ulink> a great guide with all the basics you need to know
-</simpara>
+<simpara><link xl:href="http://robotics.mcmanis.com/articles/20190318_bare-metal-arm.html">Bare Metal ARM Programming</link> a great guide with all the basics you need to know</simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="http://robotics.mcmanis.com/articles/20130907_st-blink.html">Blink, the HelloWorld of Hardware</ulink> another fantastic but more in-depth guide
-</simpara>
+<simpara><link xl:href="http://robotics.mcmanis.com/articles/20130907_st-blink.html">Blink, the HelloWorld of Hardware</link> another fantastic but more in-depth guide</simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="http://robotics.mcmanis.com/articles/20190401_cross-compiling-cortex-m.html">Cross compiling from Linux for the Cortex-M</ulink>, also targeting the STM32F407
-</simpara>
+<simpara><link xl:href="http://robotics.mcmanis.com/articles/20190401_cross-compiling-cortex-m.html">Cross compiling from Linux for the Cortex-M</link>, also targeting the STM32F407</simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="http://robotics.mcmanis.com/articles/20190331_openocd-build.html">Building OpenOCD on a Fresh Ubuntu</ulink>
-</simpara>
+<simpara><link xl:href="http://robotics.mcmanis.com/articles/20190331_openocd-build.html">Building OpenOCD on a Fresh Ubuntu</link></simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="http://robotics.mcmanis.com/articles/20190519_stm32-clocks.html">Setting up STM32F4 Clocks</ulink> detailed explanation of setting up accurate clocks (i.e. for USB)
-</simpara>
+<simpara><link xl:href="http://robotics.mcmanis.com/articles/20190519_stm32-clocks.html">Setting up STM32F4 Clocks</link> detailed explanation of setting up accurate clocks (i.e. for USB)</simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="http://robotics.mcmanis.com/articles/20140623_retargeting-libc.html">Retargeting the C Library</ulink>
-</simpara>
+<simpara><link xl:href="http://robotics.mcmanis.com/articles/20140623_retargeting-libc.html">Retargeting the C Library</link></simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="https://hackaday.com/2016/03/22/embed-with-elliot-arm-makefile-madness/">Embed With Elliot: ARM Makefile Madness</ulink>, targeting the STM32F407 MCU, specifically the <ulink url="https://www.st.com/en/evaluation-tools/stm32f4discovery.html">STM32F407G-DISC1</ulink> development board, and using CMSIS standard ARM libraries.
-</simpara>
+<simpara><link xl:href="https://hackaday.com/2016/03/22/embed-with-elliot-arm-makefile-madness/">Embed With Elliot: ARM Makefile Madness</link>, targeting the STM32F407 MCU, specifically the <link xl:href="https://www.st.com/en/evaluation-tools/stm32f4discovery.html">STM32F407G-DISC1</link> development board, and using CMSIS standard ARM libraries.</simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="https://web1.foxhollow.ca/?menu=centos7arm">GNU ARM Embedded Toolchain for Centos 7.3</ulink> Using the ARM GCC toolchain on CentOS 7.x
-</simpara>
+<simpara><link xl:href="https://web1.foxhollow.ca/?menu=centos7arm">GNU ARM Embedded Toolchain for Centos 7.3</link> Using the ARM GCC toolchain on CentOS 7.x</simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads">GNU Arm Embedded Toolchain Downloads</ulink>
-</simpara>
+<simpara><link xl:href="https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads">GNU Arm Embedded Toolchain Downloads</link></simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="https://github.com/xpack-dev-tools/openocd">OpenOCD</ulink> CLI tool used for firmware loading and to enable interactive debugging using <ulink url="http://openocd.org/doc/html/GDB-and-OpenOCD.html">GDB</ulink>.
-</simpara>
+<simpara><link xl:href="https://github.com/xpack-dev-tools/openocd">OpenOCD</link> CLI tool used for firmware loading and to enable interactive debugging using <link xl:href="http://openocd.org/doc/html/GDB-and-OpenOCD.html">GDB</link>.</simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="https://github.com/OpenNuvoton/OpenOCD-Nuvoton">OpenOCD for Nuvoton MCUs</ulink> Customized (forked) OpenOCD for Nuvoton devices
-</simpara>
+<simpara><link xl:href="https://github.com/OpenNuvoton/OpenOCD-Nuvoton">OpenOCD for Nuvoton MCUs</link> Customized (forked) OpenOCD for Nuvoton devices</simpara>
 </listitem>
 <listitem>
-<simpara>
-<ulink url="https://github.com/libusb/hidapi">HIDAPI Library</ulink> Cross-platform library for programming USB devices (used by OpenOCD)
-</simpara>
+<simpara><link xl:href="https://github.com/libusb/hidapi">HIDAPI Library</link> Cross-platform library for programming USB devices (used by OpenOCD)</simpara>
 </listitem>
 </itemizedlist>
 </section>
