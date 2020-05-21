@@ -449,7 +449,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_software">Software</a></li>
 </ul>
 </li>
-<li><a href="#_resources">Resources</a></li>
+<li><a href="#_resources">Resources</a>
+<ul class="sectlevel2">
+<li><a href="#_youtube_videos">Youtube Videos</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -514,6 +518,9 @@ which aren&#8217;t really that complicated!</p>
 </div>
 <div class="sect2">
 <h3 id="_hardware">Hardware</h3>
+<div class="paragraph">
+<p>This guide targets the following MCU vendor development kits:</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
@@ -521,7 +528,10 @@ which aren&#8217;t really that complicated!</p>
 <div class="ulist">
 <ul>
 <li>
-<p>STM32F407G-DISC1 STF32F4 Discovery Board</p>
+<p>STM32F3DISCOVERY STM32F3 Discovery Board (STM32F303VCT6) (Cortex-M4)</p>
+</li>
+<li>
+<p>STM32F407G-DISC1 STM32F4 Discovery Board (STM32F407VGT6) (Cortex-M4)</p>
 </li>
 </ul>
 </div>
@@ -531,7 +541,7 @@ which aren&#8217;t really that complicated!</p>
 <div class="ulist">
 <ul>
 <li>
-<p>NuTiny-NUC029SEE</p>
+<p>NuTiny-NUC029SEE (NUC029SEE) (Cortex-M0)</p>
 </li>
 </ul>
 </div>
@@ -541,10 +551,10 @@ which aren&#8217;t really that complicated!</p>
 <div class="ulist">
 <ul>
 <li>
-<p>OM13080: LPCXpresso1125 Board</p>
+<p>OM13080UL: LPCXpresso1125 Board (LPC1125JBD48) (Cortex-M0)</p>
 </li>
 <li>
-<p>OM13080: LPCXpresso1125 Board</p>
+<p>OM13093UL: LPCXpresso board for LPC11C24 with CMSIS DAP probe (LPC11C24FBD48) (Cortex-M0)</p>
 </li>
 </ul>
 </div>
@@ -573,13 +583,13 @@ which aren&#8217;t really that complicated!</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="http://robotics.mcmanis.com/articles/20190318_bare-metal-arm.html">Bare Metal ARM Programming</a> a great guide with all the basics you need to know</p>
+<p><a href="http://robotics.mcmanis.com/articles/20190318_bare-metal-arm.html">Bare Metal ARM Programming</a> a great guide with all the basics you need to know.</p>
 </li>
 <li>
-<p><a href="http://robotics.mcmanis.com/articles/20130907_st-blink.html">Blink, the HelloWorld of Hardware</a> another fantastic but more in-depth guide</p>
+<p><a href="http://robotics.mcmanis.com/articles/20130907_st-blink.html">Blink, the HelloWorld of Hardware</a> another fantastic but more in-depth guide.</p>
 </li>
 <li>
-<p><a href="http://robotics.mcmanis.com/articles/20190401_cross-compiling-cortex-m.html">Cross compiling from Linux for the Cortex-M</a>, also targeting the STM32F407</p>
+<p><a href="http://robotics.mcmanis.com/articles/20190401_cross-compiling-cortex-m.html">Cross compiling from Linux for the Cortex-M</a> basics of using GCC (targeting the STM32F407)</p>
 </li>
 <li>
 <p><a href="http://robotics.mcmanis.com/articles/20190331_openocd-build.html">Building OpenOCD on a Fresh Ubuntu</a></p>
@@ -610,12 +620,31 @@ which aren&#8217;t really that complicated!</p>
 </li>
 </ul>
 </div>
+<div class="sect2">
+<h3 id="_youtube_videos">Youtube Videos</h3>
+<div class="paragraph">
+<p>The following series of videos can help you understand how the Cortex-M processors work.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.youtube.com/watch?v=JH4j7fCT_o4">Learn the Fundamentals of ARM® Cortex®-M0 Processor</a> How a basic Cortex-M0 processor works</p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=qvrmOXtOpvw">How to Choose your ARM Cortex-M Processor</a> Learn the difference between various Cortex-M processors.</p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=ur2tv1MpS5o&amp;t=2432s">Efficient Software Development with ARM CMSIS v4</a> Overview of the Cortex-M Microcontroller Software Interface Standard (CMSIS), a set of vendor-agnostic and RTOS-agnostic APIs which are implemented by various MCU vendors.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-19 20:07:02 -0400
+Last updated 2020-05-21 06:57:12 -0400
 </div>
 </div>
 </body>

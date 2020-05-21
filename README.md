@@ -39,19 +39,26 @@ Why not use the vendor-recommended IDEs?
 Hardware
 --------
 
+This guide targets the following MCU vendor development kits:
+
 -   ST
 
-    -   STM32F407G-DISC1 STF32F4 Discovery Board
+    -   STM32F3DISCOVERY STM32F3 Discovery Board (STM32F303VCT6)
+        (Cortex-M4)
+
+    -   STM32F407G-DISC1 STM32F4 Discovery Board (STM32F407VGT6)
+        (Cortex-M4)
 
 -   Nuvoton
 
-    -   NuTiny-NUC029SEE
+    -   NuTiny-NUC029SEE (NUC029SEE) (Cortex-M0)
 
 -   NXP
 
-    -   OM13080: LPCXpresso1125 Board
+    -   OM13080UL: LPCXpresso1125 Board (LPC1125JBD48) (Cortex-M0)
 
-    -   OM13080: LPCXpresso1125 Board
+    -   OM13093UL: LPCXpresso board for LPC11C24 with CMSIS DAP probe
+        (LPC11C24FBD48) (Cortex-M0)
 
 Software
 --------
@@ -65,15 +72,15 @@ Resources
 
 -   [Bare Metal ARM
     Programming](http://robotics.mcmanis.com/articles/20190318_bare-metal-arm.html)
-    a great guide with all the basics you need to know
+    a great guide with all the basics you need to know.
 
 -   [Blink, the HelloWorld of
     Hardware](http://robotics.mcmanis.com/articles/20130907_st-blink.html)
-    another fantastic but more in-depth guide
+    another fantastic but more in-depth guide.
 
 -   [Cross compiling from Linux for the
-    Cortex-M](http://robotics.mcmanis.com/articles/20190401_cross-compiling-cortex-m.html),
-    also targeting the STM32F407
+    Cortex-M](http://robotics.mcmanis.com/articles/20190401_cross-compiling-cortex-m.html)
+    basics of using GCC (targeting the STM32F407)
 
 -   [Building OpenOCD on a Fresh
     Ubuntu](http://robotics.mcmanis.com/articles/20190331_openocd-build.html)
@@ -108,3 +115,23 @@ Resources
 
 -   [HIDAPI Library](https://github.com/libusb/hidapi) Cross-platform
     library for programming USB devices (used by OpenOCD)
+
+Youtube Videos
+--------------
+
+The following series of videos can help you understand how the Cortex-M
+processors work.
+
+-   [Learn the Fundamentals of ARM® Cortex®-M0
+    Processor](https://www.youtube.com/watch?v=JH4j7fCT_o4) How a basic
+    Cortex-M0 processor works
+
+-   [How to Choose your ARM Cortex-M
+    Processor](https://www.youtube.com/watch?v=qvrmOXtOpvw) Learn the
+    difference between various Cortex-M processors.
+
+-   [Efficient Software Development with ARM CMSIS
+    v4](https://www.youtube.com/watch?v=ur2tv1MpS5o&t=2432s) Overview of
+    the Cortex-M Microcontroller Software Interface Standard (CMSIS), a
+    set of vendor-agnostic and RTOS-agnostic APIs which are implemented
+    by various MCU vendors.

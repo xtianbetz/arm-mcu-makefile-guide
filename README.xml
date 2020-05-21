@@ -4,7 +4,7 @@
 <article xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 <info>
 <title>ARM MCU Makefile Guide</title>
-<date>2020-05-19</date>
+<date>2020-05-21</date>
 </info>
 <simpara>STATUS: WORK IN PROGRESS. NOTHING TO SEE HERE.</simpara>
 <simpara>A minimalist guide and skeleton for building, running, and debugging firmware
@@ -51,12 +51,16 @@ which aren&#8217;t really that complicated!</simpara>
 </itemizedlist>
 <section xml:id="_hardware">
 <title>Hardware</title>
+<simpara>This guide targets the following MCU vendor development kits:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>ST</simpara>
 <itemizedlist>
 <listitem>
-<simpara>STM32F407G-DISC1 STF32F4 Discovery Board</simpara>
+<simpara>STM32F3DISCOVERY STM32F3 Discovery Board (STM32F303VCT6) (Cortex-M4)</simpara>
+</listitem>
+<listitem>
+<simpara>STM32F407G-DISC1 STM32F4 Discovery Board (STM32F407VGT6) (Cortex-M4)</simpara>
 </listitem>
 </itemizedlist>
 </listitem>
@@ -64,7 +68,7 @@ which aren&#8217;t really that complicated!</simpara>
 <simpara>Nuvoton</simpara>
 <itemizedlist>
 <listitem>
-<simpara>NuTiny-NUC029SEE</simpara>
+<simpara>NuTiny-NUC029SEE (NUC029SEE) (Cortex-M0)</simpara>
 </listitem>
 </itemizedlist>
 </listitem>
@@ -72,10 +76,10 @@ which aren&#8217;t really that complicated!</simpara>
 <simpara>NXP</simpara>
 <itemizedlist>
 <listitem>
-<simpara>OM13080: LPCXpresso1125 Board</simpara>
+<simpara>OM13080UL: LPCXpresso1125 Board (LPC1125JBD48) (Cortex-M0)</simpara>
 </listitem>
 <listitem>
-<simpara>OM13080: LPCXpresso1125 Board</simpara>
+<simpara>OM13093UL: LPCXpresso board for LPC11C24 with CMSIS DAP probe (LPC11C24FBD48) (Cortex-M0)</simpara>
 </listitem>
 </itemizedlist>
 </listitem>
@@ -97,13 +101,13 @@ which aren&#8217;t really that complicated!</simpara>
 <title>Resources</title>
 <itemizedlist>
 <listitem>
-<simpara><link xl:href="http://robotics.mcmanis.com/articles/20190318_bare-metal-arm.html">Bare Metal ARM Programming</link> a great guide with all the basics you need to know</simpara>
+<simpara><link xl:href="http://robotics.mcmanis.com/articles/20190318_bare-metal-arm.html">Bare Metal ARM Programming</link> a great guide with all the basics you need to know.</simpara>
 </listitem>
 <listitem>
-<simpara><link xl:href="http://robotics.mcmanis.com/articles/20130907_st-blink.html">Blink, the HelloWorld of Hardware</link> another fantastic but more in-depth guide</simpara>
+<simpara><link xl:href="http://robotics.mcmanis.com/articles/20130907_st-blink.html">Blink, the HelloWorld of Hardware</link> another fantastic but more in-depth guide.</simpara>
 </listitem>
 <listitem>
-<simpara><link xl:href="http://robotics.mcmanis.com/articles/20190401_cross-compiling-cortex-m.html">Cross compiling from Linux for the Cortex-M</link>, also targeting the STM32F407</simpara>
+<simpara><link xl:href="http://robotics.mcmanis.com/articles/20190401_cross-compiling-cortex-m.html">Cross compiling from Linux for the Cortex-M</link> basics of using GCC (targeting the STM32F407)</simpara>
 </listitem>
 <listitem>
 <simpara><link xl:href="http://robotics.mcmanis.com/articles/20190331_openocd-build.html">Building OpenOCD on a Fresh Ubuntu</link></simpara>
@@ -133,5 +137,20 @@ which aren&#8217;t really that complicated!</simpara>
 <simpara><link xl:href="https://github.com/libusb/hidapi">HIDAPI Library</link> Cross-platform library for programming USB devices (used by OpenOCD)</simpara>
 </listitem>
 </itemizedlist>
+<section xml:id="_youtube_videos">
+<title>Youtube Videos</title>
+<simpara>The following series of videos can help you understand how the Cortex-M processors work.</simpara>
+<itemizedlist>
+<listitem>
+<simpara><link xl:href="https://www.youtube.com/watch?v=JH4j7fCT_o4">Learn the Fundamentals of ARM® Cortex®-M0 Processor</link> How a basic Cortex-M0 processor works</simpara>
+</listitem>
+<listitem>
+<simpara><link xl:href="https://www.youtube.com/watch?v=qvrmOXtOpvw">How to Choose your ARM Cortex-M Processor</link> Learn the difference between various Cortex-M processors.</simpara>
+</listitem>
+<listitem>
+<simpara><link xl:href="https://www.youtube.com/watch?v=ur2tv1MpS5o&amp;t=2432s">Efficient Software Development with ARM CMSIS v4</link> Overview of the Cortex-M Microcontroller Software Interface Standard (CMSIS), a set of vendor-agnostic and RTOS-agnostic APIs which are implemented by various MCU vendors.</simpara>
+</listitem>
+</itemizedlist>
+</section>
 </section>
 </article>
