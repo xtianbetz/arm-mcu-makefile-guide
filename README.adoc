@@ -15,8 +15,7 @@ for ARM-based microcontrollers using C, GCC, OpenOCD, and GDB.
 * The workflow described here should be easily adaptable to a continuous
   integration system such as Jenkins. In other words, it should be
   straightforward to automate building and publishing firmware binary
-  release-candidates automatically following code review (i.e. no humans ever
-  hand-build the official firmware files which are tested and then released).
+  release-candidates automatically following code review
 * Teach the basic concepts of MCU development to programmers already familiar
   with C programming on Linux/Mac.
 
@@ -29,8 +28,9 @@ for ARM-based microcontrollers using C, GCC, OpenOCD, and GDB.
 - The advanced GUI-based tools obscure the basic basic underlying concepts
   which aren't really that complicated!
 
-=== Hardware
+== Hardware
 
+=== Development Boards
 This guide targets the following MCU vendor development kits:
 
 * ST
@@ -42,7 +42,7 @@ This guide targets the following MCU vendor development kits:
 ** OM13080UL: LPCXpresso1125 Board (LPC1125JBD48) (Cortex-M0)
 ** OM13093UL: LPCXpresso board for LPC11C24 with CMSIS DAP probe (LPC11C24FBD48) (Cortex-M0)
 
-=== Software
+== Software
 
 * TODO: Walkthrough build/install OpenOCD
 * TODO: Walkthrough install of ARM GCC toolchain
@@ -62,6 +62,8 @@ This guide targets the following MCU vendor development kits:
 - https://github.com/xpack-dev-tools/openocd[OpenOCD] CLI tool used for firmware loading and to enable interactive debugging using http://openocd.org/doc/html/GDB-and-OpenOCD.html[GDB].
 - https://github.com/OpenNuvoton/OpenOCD-Nuvoton[OpenOCD for Nuvoton MCUs] Customized (forked) OpenOCD for Nuvoton devices
 - https://github.com/libusb/hidapi[HIDAPI Library] Cross-platform library for programming USB devices (used by OpenOCD)
+- https://interrupt.memfault.com/blog/a-deep-dive-into-arm-cortex-m-debug-interfaces[A Deep Dive into ARM Cortex-M Debug Interfaces] in-depth guide to how Cortex-M debugging works
+- https://www.nuvoton.com/tool-and-software/software-development-tool/bsp/[Nuvoton Board Support Packages] Links to various downloads (including github links) for many different Nuvoton MCUs, including the NUC029.
 
 === Youtube Videos
 
@@ -70,4 +72,3 @@ The following series of videos can help you understand how the Cortex-M processo
 - https://www.youtube.com/watch?v=JH4j7fCT_o4[Learn the Fundamentals of ARM® Cortex®-M0 Processor] How a basic Cortex-M0 processor works
 - https://www.youtube.com/watch?v=qvrmOXtOpvw[How to Choose your ARM Cortex-M Processor] Learn the difference between various Cortex-M processors.
 - https://www.youtube.com/watch?v=ur2tv1MpS5o&t=2432s[Efficient Software Development with ARM CMSIS v4] Overview of the Cortex-M Microcontroller Software Interface Standard (CMSIS), a set of vendor-agnostic and RTOS-agnostic APIs which are implemented by various MCU vendors.
-

@@ -17,8 +17,7 @@ Goals for this Guide
     continuous integration system such as Jenkins. In other words, it
     should be straightforward to automate building and publishing
     firmware binary release-candidates automatically following code
-    review (i.e. no humans ever hand-build the official firmware files
-    which are tested and then released).
+    review
 
 -   Teach the basic concepts of MCU development to programmers already
     familiar with C programming on Linux/Mac.
@@ -37,7 +36,10 @@ Why not use the vendor-recommended IDEs?
     concepts which aren’t really that complicated!
 
 Hardware
---------
+========
+
+Development Boards
+------------------
 
 This guide targets the following MCU vendor development kits:
 
@@ -61,7 +63,7 @@ This guide targets the following MCU vendor development kits:
         (LPC11C24FBD48) (Cortex-M0)
 
 Software
---------
+========
 
 -   TODO: Walkthrough build/install OpenOCD
 
@@ -115,6 +117,15 @@ Resources
 
 -   [HIDAPI Library](https://github.com/libusb/hidapi) Cross-platform
     library for programming USB devices (used by OpenOCD)
+
+-   [A Deep Dive into ARM Cortex-M Debug
+    Interfaces](https://interrupt.memfault.com/blog/a-deep-dive-into-arm-cortex-m-debug-interfaces)
+    in-depth guide to how Cortex-M debugging works
+
+-   [Nuvoton Board Support
+    Packages](https://www.nuvoton.com/tool-and-software/software-development-tool/bsp/)
+    Links to various downloads (including github links) for many
+    different Nuvoton MCUs, including the NUC029.
 
 Youtube Videos
 --------------
