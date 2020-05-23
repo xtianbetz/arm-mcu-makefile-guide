@@ -15,8 +15,7 @@ for ARM-based microcontrollers using C, GCC, OpenOCD, and GDB.
 * The workflow described here should be easily adaptable to a continuous
   integration system such as Jenkins. In other words, it should be
   straightforward to automate building and publishing firmware binary
-  release-candidates automatically following code review (i.e. no humans ever
-  hand-build the official firmware files which are tested and then released).
+  release-candidates automatically following code review
 * Teach the basic concepts of MCU development to programmers already familiar
   with C programming on Linux/Mac.
 * Avoid copying any code with a non-free license. Some vendors provide code
@@ -38,8 +37,9 @@ for ARM-based microcontrollers using C, GCC, OpenOCD, and GDB.
   ARM MCU vendors you can choose from, and you should be able to switch when
   you want.
 
-=== Hardware
+== Hardware
 
+=== Development Boards
 This guide targets the following MCU vendor development kits:
 
 * ST
@@ -73,7 +73,7 @@ to an existing LED on the dev board (hopefully there is one).
 ** 0x4002_0C00-0x4002_0FFF: GPIOD
 ** TODO: exact register addresses of the GPIO bank we want to enable for use.
 
-=== Software
+== Software
 
 * TODO: Walkthrough build/install OpenOCD
 * TODO: Walkthrough install of ARM GCC toolchain
@@ -95,6 +95,8 @@ to an existing LED on the dev board (hopefully there is one).
 - https://github.com/libusb/hidapi[HIDAPI Library] Cross-platform library for programming USB devices (used by OpenOCD)
 - https://www.keil.com/dd2/pack/[Vendor MDK5 Software Packs] Vendor software packs for Keil MDK. These .pack files are just zip files with interesting stuff inside, even if you aren't using Keil MDK. In particular we are interested in the https://www.keil.com/pack/doc/CMSIS/SVD/html/svd_Format_pg.html[SVD] XML files which describe the hardware in a standardized machine-readable format.
 - https://www.silabs.com/community/blog.entry.html/2015/06/16/chapter_5_clockingp-g7dK[MCU Clocks and Introduction to Interrupts] article about the basics of clocks on MCUs.
+- https://interrupt.memfault.com/blog/a-deep-dive-into-arm-cortex-m-debug-interfaces[A Deep Dive into ARM Cortex-M Debug Interfaces] in-depth guide to how Cortex-M debugging works
+- https://www.nuvoton.com/tool-and-software/software-development-tool/bsp/[Nuvoton Board Support Packages] Links to various downloads (including github links) for many different Nuvoton MCUs, including the NUC029.
 
 === Youtube Videos
 
@@ -103,4 +105,3 @@ The following series of videos can help you understand how the Cortex-M processo
 - https://www.youtube.com/watch?v=JH4j7fCT_o4[Learn the Fundamentals of ARM® Cortex®-M0 Processor] How a basic Cortex-M0 processor works
 - https://www.youtube.com/watch?v=qvrmOXtOpvw[How to Choose your ARM Cortex-M Processor] Learn the difference between various Cortex-M processors.
 - https://www.youtube.com/watch?v=ur2tv1MpS5o&t=2432s[Efficient Software Development with ARM CMSIS v4] Overview of the Cortex-M Microcontroller Software Interface Standard (CMSIS), a set of vendor-agnostic and RTOS-agnostic APIs which are implemented by various MCU vendors.
-

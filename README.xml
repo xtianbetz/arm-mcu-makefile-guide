@@ -24,8 +24,7 @@ CLI on Linux (and eventually Mac)</simpara>
 <simpara>The workflow described here should be easily adaptable to a continuous
 integration system such as Jenkins. In other words, it should be
 straightforward to automate building and publishing firmware binary
-release-candidates automatically following code review (i.e. no humans ever
-hand-build the official firmware files which are tested and then released).</simpara>
+release-candidates automatically following code review</simpara>
 </listitem>
 <listitem>
 <simpara>Teach the basic concepts of MCU development to programmers already familiar
@@ -62,8 +61,11 @@ ARM MCU vendors you can choose from, and you should be able to switch when
 you want.</simpara>
 </listitem>
 </itemizedlist>
+</section>
 <section xml:id="_hardware">
 <title>Hardware</title>
+<section xml:id="_development_boards">
+<title>Development Boards</title>
 <simpara>This guide targets the following MCU vendor development kits:</simpara>
 <itemizedlist>
 <listitem>
@@ -152,6 +154,7 @@ to an existing LED on the dev board (hopefully there is one).</simpara>
 </listitem>
 </itemizedlist>
 </section>
+</section>
 <section xml:id="_software">
 <title>Software</title>
 <itemizedlist>
@@ -162,7 +165,6 @@ to an existing LED on the dev board (hopefully there is one).</simpara>
 <simpara>TODO: Walkthrough install of ARM GCC toolchain</simpara>
 </listitem>
 </itemizedlist>
-</section>
 </section>
 <section xml:id="_resources">
 <title>Resources</title>
@@ -208,6 +210,12 @@ to an existing LED on the dev board (hopefully there is one).</simpara>
 </listitem>
 <listitem>
 <simpara><link xl:href="https://www.silabs.com/community/blog.entry.html/2015/06/16/chapter_5_clockingp-g7dK">MCU Clocks and Introduction to Interrupts</link> article about the basics of clocks on MCUs.</simpara>
+</listitem>
+<listitem>
+<simpara><link xl:href="https://interrupt.memfault.com/blog/a-deep-dive-into-arm-cortex-m-debug-interfaces">A Deep Dive into ARM Cortex-M Debug Interfaces</link> in-depth guide to how Cortex-M debugging works</simpara>
+</listitem>
+<listitem>
+<simpara><link xl:href="https://www.nuvoton.com/tool-and-software/software-development-tool/bsp/">Nuvoton Board Support Packages</link> Links to various downloads (including github links) for many different Nuvoton MCUs, including the NUC029.</simpara>
 </listitem>
 </itemizedlist>
 <section xml:id="_youtube_videos">
