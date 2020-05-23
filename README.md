@@ -23,18 +23,28 @@ Goals for this Guide
 -   Teach the basic concepts of MCU development to programmers already
     familiar with C programming on Linux/Mac.
 
-Why not use the vendor-recommended IDEs?
-========================================
+-   Avoid copying any code with a non-free license. Some vendors provide
+    code examples or supporting source files with non-free licenses.
+    Instead of copying example code from these vendors, we need to
+    reference datasheets and manuals.
+
+Why not use vendor-recommended IDEs?
+====================================
 
 -   The classic vendor-supported methods of developing firmware for MCUs
-    is using a full-blown IDE like Keil, IAR, or MCU Eclipse.
+    is using a full-blown GUI-based IDE like Keil, IAR, or MCU Eclipse.
 
--   These legacy IDE-based tools are GUI-based and can be proprietary
-    and/or expensive. They have their own learning curves as they are
-    advanced tools for "serious professionals".
+-   These tools are GUI-based and can be proprietary and/or expensive.
+    They also have their own learning curves as they are advanced tools
+    for "serious professionals".
 
--   The advanced GUI-based tools obscure the basic basic underlying
-    concepts which aren’t really that complicated!
+-   GUI-based tools can obscure the underlying concepts which aren’t
+    really that complicated!
+
+-   Using vendor-provided SDKs and their accompanying non-free licenses
+    could inadvertently lock you into a particular MCU vendor. There are
+    many different ARM MCU vendors you can choose from, and you should
+    be able to switch when you want.
 
 Hardware
 --------
@@ -59,6 +69,49 @@ This guide targets the following MCU vendor development kits:
 
     -   OM13093UL: LPCXpresso board for LPC11C24 with CMSIS DAP probe
         (LPC11C24FBD48) (Cortex-M0)
+
+Reading Vendor Datasheets
+-------------------------
+
+In order to enable the GPIOs, we have to find out their addresses from
+the vendor datasheets. We also need to know which GPIO bank (and/or pin)
+is mapped to an existing LED on the dev board (hopefully there is one).
+
+-   Nuvoton
+
+    -   MCU: NUC029SEE
+
+    -   MCU Datasheet: Nuvoton NUC029xEE technical user manual
+        (TRM\_NUC029xEE\_EN\_Rev1.01.pdf)
+
+    -   SDK Datasheet: UM\_NuTiny-SDK-NUC029SEE\_EN\_Rev1.00.pdf
+
+    -   SVD File: NUC029EE\_v1.svd (from Keil pack downloads, see link
+        below)
+
+    -   LED GPIO: GPIO1 (from "SDK Circuit Schematic" in ), from "Target
+        Chip Schematic", LED is hooked up to PB.4 (Pin 10)
+
+    -   See "Section 6.2.4 System Memory Map", "6.2.7 Register Map",
+        "SDK Circuit Schematic"
+
+    -   Register: GPB\_MFP, Offset: GCR\_BA(0x5000\_0000)+0x34 "GPIOA
+        Multiple Function and Input Type Control Register"
+
+    -   LED PIN Bit Offset: 4 (i.e. PB.4 is enabled using the fifth bit
+        in the register)
+
+    -   0x5000\_4000-0x5000\_7FFF: "GPIO Control registers"
+
+-   ST
+
+    -   ST STM32F407xx: look in "Memory mapping" (Section 4), "Table 10.
+        register boundary addresses"
+
+    -   0x4002\_0C00-0x4002\_0FFF: GPIOD
+
+    -   TODO: exact register addresses of the GPIO bank we want to
+        enable for use.
 
 Software
 --------
@@ -115,6 +168,18 @@ Resources
 
 -   [HIDAPI Library](https://github.com/libusb/hidapi) Cross-platform
     library for programming USB devices (used by OpenOCD)
+
+-   [Vendor MDK5 Software Packs](https://www.keil.com/dd2/pack/) Vendor
+    software packs for Keil MDK. These .pack files are just zip files
+    with interesting stuff inside, even if you aren’t using Keil MDK. In
+    particular we are interested in the
+    [SVD](https://www.keil.com/pack/doc/CMSIS/SVD/html/svd_Format_pg.html)
+    XML files which describe the hardware in a standardized
+    machine-readable format.
+
+-   [MCU Clocks and Introduction to
+    Interrupts](https://www.silabs.com/community/blog.entry.html/2015/06/16/chapter_5_clockingp-g7dK)
+    article about the basics of clocks on MCUs.
 
 Youtube Videos
 --------------

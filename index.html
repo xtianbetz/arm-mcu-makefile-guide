@@ -443,9 +443,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_goals_for_this_guide">Goals for this Guide</a></li>
-<li><a href="#_why_not_use_the_vendor_recommended_ides">Why not use the vendor-recommended IDEs?</a>
+<li><a href="#_why_not_use_vendor_recommended_ides">Why not use vendor-recommended IDEs?</a>
 <ul class="sectlevel2">
 <li><a href="#_hardware">Hardware</a></li>
+<li><a href="#_reading_vendor_datasheets">Reading Vendor Datasheets</a></li>
 <li><a href="#_software">Software</a></li>
 </ul>
 </li>
@@ -493,26 +494,39 @@ hand-build the official firmware files which are tested and then released).</p>
 <p>Teach the basic concepts of MCU development to programmers already familiar
 with C programming on Linux/Mac.</p>
 </li>
+<li>
+<p>Avoid copying any code with a non-free license. Some vendors provide code
+examples or supporting source files with non-free licenses. Instead of
+copying example code from these vendors, we need to reference datasheets and
+manuals.</p>
+</li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_why_not_use_the_vendor_recommended_ides">Why not use the vendor-recommended IDEs?</h2>
+<h2 id="_why_not_use_vendor_recommended_ides">Why not use vendor-recommended IDEs?</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
 <p>The classic vendor-supported methods of developing firmware for MCUs is using
-a full-blown IDE like Keil, IAR, or MCU Eclipse.</p>
+a full-blown GUI-based IDE like Keil, IAR, or MCU Eclipse.</p>
 </li>
 <li>
-<p>These legacy IDE-based tools are GUI-based and can be proprietary and/or
-expensive. They have their own learning curves as they are advanced tools for "serious professionals".</p>
+<p>These tools are GUI-based and can be proprietary and/or expensive. They also
+have their own learning curves as they are advanced tools for "serious
+professionals".</p>
 </li>
 <li>
-<p>The advanced GUI-based tools obscure the basic basic underlying concepts
-which aren&#8217;t really that complicated!</p>
+<p>GUI-based tools can obscure the underlying concepts which aren&#8217;t really that
+complicated!</p>
+</li>
+<li>
+<p>Using vendor-provided SDKs and their accompanying non-free licenses could
+inadvertently lock you into a particular MCU vendor. There are many different
+ARM MCU vendors you can choose from, and you should be able to switch when
+you want.</p>
 </li>
 </ul>
 </div>
@@ -555,6 +569,68 @@ which aren&#8217;t really that complicated!</p>
 </li>
 <li>
 <p>OM13093UL: LPCXpresso board for LPC11C24 with CMSIS DAP probe (LPC11C24FBD48) (Cortex-M0)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_reading_vendor_datasheets">Reading Vendor Datasheets</h3>
+<div class="paragraph">
+<p>In order to enable the GPIOs, we have to find out their addresses from the
+vendor datasheets. We also need to know which GPIO bank (and/or pin) is mapped
+to an existing LED on the dev board (hopefully there is one).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Nuvoton</p>
+<div class="ulist">
+<ul>
+<li>
+<p>MCU: NUC029SEE</p>
+</li>
+<li>
+<p>MCU Datasheet: Nuvoton NUC029xEE technical user manual (TRM_NUC029xEE_EN_Rev1.01.pdf)</p>
+</li>
+<li>
+<p>SDK Datasheet: UM_NuTiny-SDK-NUC029SEE_EN_Rev1.00.pdf</p>
+</li>
+<li>
+<p>SVD File: NUC029EE_v1.svd (from Keil pack downloads, see link below)</p>
+</li>
+<li>
+<p>LED GPIO: GPIO1 (from "SDK Circuit Schematic" in ), from "Target Chip Schematic", LED is hooked up to PB.4 (Pin 10)</p>
+</li>
+<li>
+<p>See "Section 6.2.4 System Memory Map", "6.2.7 Register Map",  "SDK Circuit Schematic"</p>
+</li>
+<li>
+<p>Register: GPB_MFP, Offset: GCR_BA(0x5000_0000)+0x34 "GPIOA Multiple Function and Input Type Control Register"</p>
+</li>
+<li>
+<p>LED PIN Bit Offset: 4 (i.e. PB.4 is enabled using the fifth bit in the register)</p>
+</li>
+<li>
+<p>0x5000_4000-0x5000_7FFF: "GPIO Control registers"</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>ST</p>
+<div class="ulist">
+<ul>
+<li>
+<p>ST STM32F407xx: look in "Memory mapping" (Section 4), "Table 10. register boundary addresses"</p>
+</li>
+<li>
+<p>0x4002_0C00-0x4002_0FFF: GPIOD</p>
+</li>
+<li>
+<p>TODO: exact register addresses of the GPIO bank we want to enable for use.</p>
 </li>
 </ul>
 </div>
@@ -618,6 +694,12 @@ which aren&#8217;t really that complicated!</p>
 <li>
 <p><a href="https://github.com/libusb/hidapi">HIDAPI Library</a> Cross-platform library for programming USB devices (used by OpenOCD)</p>
 </li>
+<li>
+<p><a href="https://www.keil.com/dd2/pack/">Vendor MDK5 Software Packs</a> Vendor software packs for Keil MDK. These .pack files are just zip files with interesting stuff inside, even if you aren&#8217;t using Keil MDK. In particular we are interested in the <a href="https://www.keil.com/pack/doc/CMSIS/SVD/html/svd_Format_pg.html">SVD</a> XML files which describe the hardware in a standardized machine-readable format.</p>
+</li>
+<li>
+<p><a href="https://www.silabs.com/community/blog.entry.html/2015/06/16/chapter_5_clockingp-g7dK">MCU Clocks and Introduction to Interrupts</a> article about the basics of clocks on MCUs.</p>
+</li>
 </ul>
 </div>
 <div class="sect2">
@@ -644,7 +726,7 @@ which aren&#8217;t really that complicated!</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-21 06:57:12 -0400
+Last updated 2020-05-22 21:19:11 -0400
 </div>
 </div>
 </body>
