@@ -13,5 +13,9 @@ README.md: README.xml
 clean:
 	rm -f index.html README.md README.xml
 
-preview: index.html
+show-preview: index.html
 	firefox index.html
+
+reload-preview: index.html
+	reload-firefox
+

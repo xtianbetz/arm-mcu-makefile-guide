@@ -1,31 +1,44 @@
 STATUS: WORK IN PROGRESS. NOTHING TO SEE HERE.
 
 A minimalist guide and skeleton for building, running, and debugging
-firmware for ARM-based microcontrollers using C, GCC, OpenOCD, and GDB.
+firmware for ARM-based microcontrollers.
+
+You will use **only** the following software tools:
+
+-   Make, for orchestrating build tasks
+
+-   GNU GCC and LD, for compiling ARM binaries
+
+-   OpenOCD, for flashing firmware and interactive debugging.
+
+-   GDB, for interactive debugging via OpenOCD.
+
+-   Your favorite text editor, for editing source files.
+
+-   Your favorite terminal emulator, for doing CLI tasks.
 
 Goals for this Guide
 ====================
 
--   Demonstrate a minimal Makefile-based solution for building an
-    extremely simple LED-blinking firmware for an ARM microcontroller
-    (MCU).
+After following this guide, you will be able to:
 
--   Demonstrate a build/test/debug workflow that works entirely from the
-    CLI on Linux (and eventually Mac)
+-   Demonstrate a minimal Makefile-based solution for a *very* simple
+    LED-blinking firmware.
 
--   The workflow described here should be easily adaptable to a
-    continuous integration system such as Jenkins. In other words, it
-    should be straightforward to automate building and publishing
-    firmware binary release-candidates automatically following code
-    review
+-   Understand the basic concepts of MCU development.
 
--   Teach the basic concepts of MCU development to programmers already
-    familiar with C programming on Linux/Mac.
+-   Perform build/test/debug cylces entirely from the CLI on Linux (and
+    eventually Mac)
 
--   Avoid copying any code with a non-free license. Some vendors provide
-    code examples or supporting source files with non-free licenses.
-    Instead of copying example code from these vendors, we need to
-    reference datasheets and manuals.
+-   Adapt the Makefile to a continuous integration system such as
+    Jenkins. In other words, it should be straightforward to automate
+    building and publishing firmware binary release-candidates
+    automatically following code review
+
+-   Avoid copying vendor code with non-free licenses. Some vendors
+    provide code examples or supporting source files with non-free
+    licenses. Instead of copying example code from these vendors, we
+    will reference datasheets and manuals.
 
 Why not use vendor-recommended IDEs?
 ====================================
@@ -75,9 +88,29 @@ This guide targets the following MCU vendor development kits:
 Reading Vendor Datasheets
 -------------------------
 
-In order to enable the GPIOs, we have to find out their addresses from
-the vendor datasheets. We also need to know which GPIO bank (and/or pin)
-is mapped to an existing LED on the dev board (hopefully there is one).
+The datasheet for your microcontroller is often the best source of
+information about how to program your MCU. Find your vendor’s datasheet
+on their website and put it someplace handy. You will be using the
+datasheet a lot!
+
+Things we need from the Vendor Datasheets:
+
+-   ROM (flash) size
+
+-   ROM base address
+
+-   RAM size
+
+-   RAM base address
+
+-   GPIO Bank and Pin for blinking LED
+
+-   GPIO configuration and/or control registers
+
+In order to enable the GPIOs as outputs and blink an LED, we have to
+find the addresses of the control registers from the vendor datasheets.
+We also need to know which GPIO bank (and/or pin) is mapped to an
+existing LED on the dev board (hopefully there is one).
 
 -   Nuvoton
 
@@ -86,24 +119,45 @@ is mapped to an existing LED on the dev board (hopefully there is one).
     -   MCU Datasheet: Nuvoton NUC029xEE technical user manual
         (TRM\_NUC029xEE\_EN\_Rev1.01.pdf)
 
-    -   SDK Datasheet: UM\_NuTiny-SDK-NUC029SEE\_EN\_Rev1.00.pdf
+        -   Note: For this model, the 'S' in the model designates the
+            physical package type. This datasheet is shared across a few
+            different package types.
+
+    -   SDK Datasheet: NuMicro Family NuTiny-SDK-NUC029SEE User Manual
+        (UM\_NuTiny-SDK-NUC029SEE\_EN\_Rev1.00.pdf)
 
     -   SVD File: NUC029EE\_v1.svd (from Keil pack downloads, see link
         below)
 
-    -   LED GPIO: GPIO1 (from "SDK Circuit Schematic" in ), from "Target
-        Chip Schematic", LED is hooked up to PB.4 (Pin 10)
+    -   ROM size: 128K
 
-    -   See "Section 6.2.4 System Memory Map", "6.2.7 Register Map",
-        "SDK Circuit Schematic"
+    -   ROM base address: 0x0000\_0000
 
-    -   Register: GPB\_MFP, Offset: GCR\_BA(0x5000\_0000)+0x34 "GPIOA
-        Multiple Function and Input Type Control Register"
+    -   RAM size: 16K
+
+    -   RAM base address: 0x2000\_0000
+
+    -   LED GPIO: GPIO1 (from "SDK Circuit Schematic" in SDK User
+        Manual). Acccording to "Target Chip Schematic", LED is hooked up
+        to GPIO Bank B (PB.4), Pin 10
 
     -   LED PIN Bit Offset: 4 (i.e. PB.4 is enabled using the fifth bit
-        in the register)
+        in the register, GPIOB\_DOUT)
+
+    -   See "Section 6.2.4 System Memory Map", "6.2.7 Register Map",
+        "6.6.5 Register Map", "SDK Circuit Schematic"
+
+    -   System Control Register: GPB\_MFP, Offset:
+        GCR\_BA(0x5000\_0000)+0x34 "GPIOA Multiple Function and Input
+        Type Control Register"
 
     -   0x5000\_4000-0x5000\_7FFF: "GPIO Control registers"
+
+    -   GPIO\_BA (base address): 0x5000\_4000
+
+    -   GPIOB\_PMD (I/O mode control register): GPIO\_BA+0x040
+
+    -   GPIOB\_DOUT (output register): GPIO\_BA+0x048
 
 -   ST
 
@@ -118,12 +172,227 @@ is mapped to an existing LED on the dev board (hopefully there is one).
 Software
 ========
 
--   TODO: Walkthrough build/install OpenOCD
+Getting Started
+===============
+
+    x@x1carbon:~$ cd ~/Code
+    x@x1carbon:~/Code$ mkdir arm-blink
+
+Project Source File Overview
+============================
+
+The following source files are used to build the binary you will load:
+
+-   The device startup ARM assembly source (startup\_ARMCMX.s)
+
+-   The device memory parameters (heap and stack size) (mem\_ARMCM0.h)
+
+-   The device application C source (main.c)
+
+Walking through the ARM Startup Assembly Language File
+======================================================
+
+We’ll start by copying the the ARM assembly startup file we need from
+the official ARM software github.
+
+    x@x1carbon:~/Code$ git clone git@github.com:ARM-software/CMSIS_5.git
+    x@x1carbon:~/Code$ cd CMSIS_5/CMSIS
+    x@x1carbon:~/Code/CMSIS_5/CMSIS$ find | grep "startup" | grep CM0 | grep GCC
+    ./DSP/Platforms/FVP/ARMCM0/Startup/GCC/startup_ARMCM0.S
+    ./DSP/Platforms/IPSS/ARMCM0/Startup/GCC/startup_ARMCM0.S
+    x@x1carbon:~/Code/CMSIS_5/CMSIS$ cp ./DSP/Platforms/FVP/ARMCM0/Startup/GCC/startup_ARMCM0.S ~/Code/arm-blink/
+
+What is going on in this file? First go read the first five paragraphs
+from the [fine
+manual](https://sourceware.org/binutils/docs/as/Secs-Background.html#Secs-Background)
+for binutils as (the GNU binutils assembler). The manual explains what a
+binary section is and will help you understand how the linker works, so
+don’t skip it!
+
+The first two lines of startup\_ARMCM0.S set the ASM syntax and
+architecture (the Cortex-M0 is an armv6-m).
+
+The Interrupt Vector Table
+--------------------------
+
+-   The next lines of the setup assembly define a binary section called
+    ".vectors" with a two byte alignment. This section is commonly
+    called the [interrupt vector
+    table](https://en.wikipedia.org/wiki/Interrupt_vector_table).
+
+-   The interrupt vector table is essentially an array of function
+    pointers.
+
+-   In the assembly code, three
+    [global](https://sourceware.org/binutils/docs/as/Global.html#Global)
+    symbols are declared. These symbols help the linker find the vector
+    table when it assembles the final binary that you will flash to your
+    device.
+
+-   Next, the vector table itself is defined. The [ARM Cortex-M0 vector
+    table](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0497a/BABIFJFG.html)
+    layout is specified by ARM.
+
+-   When an interrupt occurs the CPU jumps to the 32-bit address for the
+    specific interrupt that occurred and continues executing code there.
+
+-   The interrupt we care about right now is the Reset interrupt that
+    occurs when the CPU powers on.
+
+-   The first 32-bits in the vector table are special: they hold the
+    initial stack pointer, the address of the top of the stack. (note:
+    stacks grow down on ARM and nearly all other modern processors).
+
+-   The next 32-bits point at the address of the reset handler code
+    (which will be defined later in the assembly file).
+
+-   A bunch more default handlers are created for different interrupts
+    that we reload-firefox
+
+-   Next, the "BL" instruction tells the CPU to branch to the SystemInit
+    function, when the SystemInit function returns it will continue on
+    the next instruction. This function will be written in C code later
+    and linked using the link script.
+
+-   After we return from SystemInit, we pick up by loading two addresses
+    using two [ARM-specific "synthetic"
+    opcodes](https://sourceware.org/binutils/docs/as/ARM-Opcodes.html#ARM-Opcodes).
+    These lines reference two symbols, `_copy_table_start_` and
+    `_copy_table_end_`. These symbols are used by ResetHandler to copy
+    the data sections of the binary from ROM to RAM. We’ll see them
+    being defined later in the linker script.
+
+-   A similar process happens with `_zero_table_start_` and
+    `_zero_table_end_` in order to zero out the [BSS
+    section](https://en.wikipedia.org/wiki/.bss).
+
+The C Code
+==========
+
+The Linker Script
+=================
+
+> The main purpose of the linker script is to describe how the sections
+> in the input files should be mapped into the output file, and to
+> control the memory layout of the output file.
+>
+> —  [GNU LD
+> Manual](https://sourceware.org/binutils/docs/ld/Scripts.html)
+
+The linker script instructs GNU ld to create a binary that includes the
+vector table section, compiled assembly instructions section, and
+compiled C program sections. All these sections need to go into the
+exact right locations in the binary. This way the CPU can find the
+vector table where it expects it to be, the vector table’s second entry
+points at the compiled ResetHandler code, and so on.
+
+We will just the copy linker script from the ARM CMSIS v5 distribution
+since it has an open license:
+
+    x@x1carbon:~/Code/arm-blink$ cp /home/x/Code/CMSIS_5/CMSIS/DSP/Platforms/IPSS/ARMCM0/LinkScripts/GCC/lnk.ld .
+
+The linker script references a file called mem\_ARMCM0.h which defines
+the stack size as 12 KB and a heap size of 1024 KB (1 MB).
+
+    x@x1carbon:~/Code/arm-blink$ cp /home/x/Code/CMSIS_5/CMSIS/DSP/Platforms/IPSS/ARMCM0/LinkScripts/GCC/mem_ARMCM0.h .
+
+Next, edit the linker script to make the size value parameters match
+your MCU from the information you collected above. Make sure to convert
+decimal sizes to hex!
+
+For example, for the NUC029SEE has 128KB ROM and 16KB RAM, so you would
+set the values as follows.
+
+-   Set \_\_ROM\_\_SIZE to "0x000020000" (128Kb\*1024 is 131072 bytes in
+    decimal, 0x20000 in hex)
+
+-   Set \_\_RAM\_\_SIZE to "0x000004000" (16Kb\*1024 is 16384 bytes in
+    decimal, 0x4000 in hex)
+
+-   The \_\_ROM\_BASE and \_\_RAM\_BASE do not need to be changed since
+    they are standard values.
+
+The linker script defines the memory layout using the `MEMORY` command.
+This command allows later parts of the linker script to reference
+specific regions of memory. Our memory consists of two regions: `FLASH`
+and `RAM`, which are defined according to the size/base parameters you
+setup.
+
+Next, the linker script declares that that ResetHandler function
+(defined in the startup assembly file) should be the main [entry
+point](https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_node/ld_24.html)
+for our final binary.
+
+The script then uses the `SECTIONS` keyword to define the binary
+sections:
+
+-   The main `.text` section is defined in the `FLASH` memory region. It
+    includes the following susubsections:
+
+    -   The .vectors section, which references the vector table defined
+        in the startup assembly file.
+
+    -   All input program binary .text sections follow next. In our case
+        the C code will be compiled into a binary object with a single
+        text section.
+
+    -   The code for any initializers, finalizers, constructors, and
+        destructors (i.e. for C libraries or C++ applications)
+
+    -   Read-only data (rodata)
+
+    -   A special section called the
+        [eh-frame](https://www.airs.com/blog/archives/460) is used by
+        GCC to handle C++ exceptions and unwind the stack when
+        debugging.
+
+-   The `.ARM.extab` and `.ARM.exidx` sections are also used for
+    exceptions and stack unwinding, but are specifically part of the ARM
+    standard.
+
+-   The `.copy.table` section is a special section that is used by the
+    ARM startup assembly code. This section will contain the memory
+    addresses of the program data section (i.e. the part that would
+    contain global variables or structures).
+
+-   The `.zero.table` section is similar to the `.copy.table` sections.
+    The memory regions referenced by the symbols in this section will be
+    zeroed out in the ARM startup assembly.
+
+-   The `.data` section is the first binary section in the `MEMORY`
+    region. It includes the following subsections:
+
+    -   the `data_start` symbol marks the start of this section; it is
+        referenced earlier in the linker script and in startup assembly
+        fiile.
+
+    -   the vtable ([a virtual method
+        table](https://en.wikipedia.org/wiki/Virtual_method_table)) used
+        by C++ programs. \*\*
+
+    -   Next, the linker includes the main data section and all other
+        data sections from any input binary files.
+
+    -   Data values for preinit, init, finit come next. These are also
+        used for C++ programs.
+
+Building OpenOCD
+================
 
 -   TODO: Walkthrough install of ARM GCC toolchain
 
+<!-- -->
+
+    export PATH=$PATH:/home/x/Toolchains/gcc-arm-none-eabi-9-2019-q4-major/bin
+
+-   TODO: Walkthrough build/install OpenOCD
+
 Resources
 =========
+
+-   [Cortex-M0
+    Boot](https://jcastellssala.com/2016/12/15/cortex-m0-boot/) nice
+    article describing how the Cortex-M0 boots
 
 -   [Bare Metal ARM
     Programming](http://robotics.mcmanis.com/articles/20190318_bare-metal-arm.html)
@@ -191,6 +460,14 @@ Resources
     Packages](https://www.nuvoton.com/tool-and-software/software-development-tool/bsp/)
     Links to various downloads (including github links) for many
     different Nuvoton MCUs, including the NUC029.
+
+-   [GNU LD Command
+    language](https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_chapter/ld_3.html)
+    Understanding GNU LD linker scripts.
+
+-   [From Zero to main(): Demystifying Firmware Linker
+    Scripts](https://interrupt.memfault.com/blog/how-to-write-linker-scripts-for-firmware)
+    How linker scripts work, illustrated by a simple blinky hello world.
 
 Youtube Videos
 --------------
